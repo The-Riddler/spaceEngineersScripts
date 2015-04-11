@@ -32,8 +32,11 @@ void checkAirVents()
     for(int i=0; i<vents.Count; i=i+1){ 
         IMyAirVent vent = (IMyAirVent) vents[i]; 
         if(vent.CustomName.Contains("[airlock]")){ 
-             write(vent.CustomName.Replace("[airlock]", "").Trim() + ": Airlock\r\n", true); 
-            continue; 
+             write(String.Format("{0}: Airlock {1:P}\r\n",
+                vent.CustomName.Replace("[airlock]", "").Trim(),
+                vent.GetOxygenLevel()
+             ), true);
+            continue;
         } 
  
         if(vent.IsPressurized() != true){ 

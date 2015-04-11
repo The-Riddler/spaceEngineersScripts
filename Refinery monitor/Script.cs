@@ -5,6 +5,8 @@ static int period = 5; //Time between runs in seconds
 static string displayTag = "[refStatus]"; 
 static Dictionary<string, int> lastValues = new Dictionary<string, int>();
 static Dictionary<string, double> rates = new Dictionary<string, double>();
+static int maxChange = 1000; //More than this wont be taken into the rates calculation
+
 //
 //Code
 //
@@ -37,7 +39,7 @@ void checkRefinery(IMyRefinery r)
     if(lastValues.ContainsKey(key)){    
         int diff = lastValues[key] - amount;
         string ratesKey = key + ":" + items[0].Content.SubtypeName;
-        if(rates.ContainsKey(ratesKey)){
+        if(rates.ContainsKey(ratesKey) && diff < maxChange){
             double exp = 1/Math.Exp(period/300.0);
             rates[ratesKey] = rates[ratesKey] * exp + diff * (1-exp);
         }else{
